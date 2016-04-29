@@ -23,12 +23,54 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 void led_set(uint8_t usb_led)
 {
     if (usb_led & (1<<USB_LED_CAPS_LOCK)) {
-        // output low
-        DDRD |= (1<<2);
-        PORTD &= ~(1<<2);
+        // Output high
+        DDRD |= (1<<1);
+        PORTD |= (1<<1);
+	DDRD |= (1<<5);
+        PORTD |= (1<<5);
     } else {
-        // Hi-Z
-        DDRD &= ~(1<<2);
-        PORTD &= ~(1<<2);
+        // output low
+        DDRD &= ~(1<<1);
+        PORTD &= ~(1<<1);
+        DDRD &= ~(1<<5);
+        PORTD &= ~(1<<5);
+    }
+      
+    if (usb_led & (1<<USB_LED_SCROLL_LOCK))
+    {
+        // Output high.
+        DDRD |= (1<<7);
+        PORTD |= (1<<7);
+    }
+    else
+    {
+        // Output low.
+        DDRD &= ~(1<<7);
+        PORTD &= ~(1<<7);
+    }
+
+    if (usb_led & (1<<USB_LED_NUM_LOCK))
+    {
+        // Output high.
+        DDRD |= (1<<3);
+        PORTD |= (1<<3);
+    }
+    else
+    {
+        // Output low.
+        DDRD &= ~(1<<3);
+        PORTD &= ~(1<<3);
+    }
+
+}
+
+void led_layer_set(uint32_t state) {
+    DDRD |= (1<<4);
+
+    /* Led for Layer 1 */
+    if ((1<<1 & state) != 0) {
+        PORTD |= (1<<4);
+    } else {
+        PORTD &= ~(1<<4);
     }
 }
